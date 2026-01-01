@@ -473,11 +473,21 @@ namespace DotNetPlugin
                                             }
 
 
-                                            properties[paramName] = new
+                                            var schemaProperty = new Dictionary<string, object>
                                             {
-                                                type = paramType,
-                                                description = paramdescription
+                                                { "type", paramType },
+                                                { "description", paramdescription }
                                             };
+
+                                            if (param.ParameterType.IsArray)
+                                            {
+                                                schemaProperty["items"] = new Dictionary<string, object>
+                                                {
+                                                    { "type", GetJsonSchemaType(param.ParameterType.GetElementType()) }
+                                                };
+                                            }
+
+                                            properties[paramName] = schemaProperty;
                                                 
 
                                             if (!param.IsOptional)

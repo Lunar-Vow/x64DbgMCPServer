@@ -478,7 +478,15 @@ namespace DotNetPlugin
         [Command("ExecuteDebuggerCommandDirect", DebugOnly = false)]
         public static bool ExecuteDebuggerCommandDirect(string[] args)
         {
-            return ExecuteDebuggerCommandDirect(args);
+            if (args == null || args.Length == 0)
+            {
+                Console.WriteLine("ExecuteDebuggerCommandDirect: no args provided");
+                return false;
+            }
+
+            var command = string.Join(" ", args);
+            Console.WriteLine("Executing DebuggerCommandDirect: " + command);
+            return Bridge.DbgCmdExecDirect(command);
         }
 
         //[Command("ReadMemory", DebugOnly = false)]
